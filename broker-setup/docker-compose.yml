@@ -1,0 +1,36 @@
+services:
+
+  web-client:
+    restart: always
+    stdin_open: true
+    tty: true
+    image: remotivelabs/remotive-web-app:${REMOTIVEWEBAPP_TAG:-latest}
+    volumes:
+      - "${CONFIG_FOLDER:-./configuration}:/service_client/configuration"
+    ports:
+      - "8083:8080"
+
+  signal-broker:
+    tty: true
+    restart: always
+    image: remotivelabs/remotivebroker-server:${REMOTIVEBROKER_TAG:-latest}
+    ports:
+      - "50051:50051"
+      - "4040:4040"
+      - "4000:4000"
+    # Mount the folder "configuration" folder into container. Itself
+    # configurable through an environment variable (or set in a .env file).
+    volumes:
+      - "${CONFIG_FOLDER:-./configuration}:/signalbroker/_build/prod/rel/signal_server/configuration"
+      - "${HOME}/.config/remotive:/root/.config/remotive:ro"
+    # Use this if you need to customize the command that this container runs;
+    # set the variable in a .env file.
+    # command: "${CUSTOM_COMMAND}"
+    environment:
+      - RELEASE_DISTRIBUTION=name
+      - RELEASE_COOKIE=test
+      - RELEASE_NODE=node@${NODE_NAME:-unset.example.com}
+      # Below adds support for version < 1.7.0
+      - REPLACE_OS_VARS=true
+      - COOKIE=test
+      - NODENAME=node@${NODE_NAME:-unset.example.com}

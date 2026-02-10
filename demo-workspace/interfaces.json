@@ -1,0 +1,13 @@
+{
+  "chains": [
+    {
+      "namespace": "SteeringDemo",
+      "type": "can",
+      "device_name": "virtualcan",
+      "config": {
+        "database": "steering.dbc",
+        "namespace_separation": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+[Unit]
+Description=Beamy Upgrade Service
+After=docker.service
+
+[Service]
+ExecStart=@BEAMYHOME@/scripts/trigger-upgrade.sh
+WorkingDirectory=@BEAMYHOME@
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=@BEAMYUSER@
+
+[Install]
+WantedBy=multi-user.target
